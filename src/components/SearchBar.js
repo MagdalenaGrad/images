@@ -1,26 +1,26 @@
-import React from 'react'
+import React, {useState} from 'react'
 
-class SearchBar extends React.Component {
-  state = {
-    query: ''
-  }
-  onFormSubmit = (e) => {
+const SearchBar = ({onSubmit}) => {
+
+  const [query, setQuery] = useState('') 
+
+  const onFormSubmit = (e) => {
     e.preventDefault()
-    this.props.onSubmit(this.state.query)
+    onSubmit(query)
   }
-  onInputChange = (e) => {
-    this.setState({query: e.target.value})
+
+  const onInputChange = (e) => {
+    setQuery(e.target.value)
   }
-  render () {
-    return (
+
+  return (
     <div className="ui segment" style={{marginTop: '1rem'}}>
-      <form className="ui form" action="" onSubmit={this.onFormSubmit}><div className="field">
+      <form className="ui form" action="" onSubmit={onFormSubmit}><div className="field">
         <label htmlFor="">Image Search</label>
-        <input type="text" value={this.state.query} name="" id="" onChange={this.onInputChange}/>
+        <input type="text" value={query} name="" id="" onChange={onInputChange}/>
       </div></form>
     </div>
-    )
-  }
+  )
 }
 
 export default SearchBar

@@ -1,35 +1,19 @@
-import React from 'react'
-import axiosCall from '../api/unsplash' 
+import React, {useState} from 'react'
 import SearchBar from './SearchBar'
 import ImageList from './ImageList'
+import LoadMore from './LoadMore'
+import useImgs from '../hooks/useImgs'
 
-class App extends React.Component {
-  state = {
-    list: []
-  }
+const App = () => {
+  const [list, search] = useImgs('dogs')
 
-   onSearchSubmit = async (q) => {
-    try {
-    const res = await axiosCall.get('https://api.unsplash.com/search/photos', {
-      params: {
-        query: q,
-        per_page: 20
-      }
-    })
-    this.setState({list: res.data.results})
-    console.log(res)
-    } catch (e) {
-      console.log(e)
-    }
-  }
-  render () {
-    return (
-      <div className="ui container">
-        <SearchBar onSubmit={this.onSearchSubmit} />
-        <ImageList images={this.state.list} />
-      </div>
-    )
-  }
+  return (
+    <div className="ui container">
+      <SearchBar onSubmit={search} />
+      <ImageList images={list} />
+      {list.length > 1 ? <LoadMore /> : ''}
+    </div>
+  )
 }
 
 export default App
